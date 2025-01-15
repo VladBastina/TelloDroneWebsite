@@ -102,3 +102,18 @@ To run the Angular application, use the following command:
 ng serve
 ```
 This will start the Angular app and make it accessible at http://localhost:4200.
+
+# Screenshots
+
+## Main Menu
+![HomeScreen](imgs/main_menu.png)
+
+## Chat Page
+![ChatPage](imgs/chat_page.png)
+
+Here you can interact with an inteligent agent to find out more about the site and how to control the drone using the camera page.
+
+## Camera Page
+![CameraPage](imgs/camera_page.png)
+
+Here you can interact with the camera and show diffrent signs that control the drone.
