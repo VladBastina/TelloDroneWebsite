@@ -92,7 +92,7 @@ npm install -g @angular/cli
 Navigate to the front-end folder:
 
 ```bash
-cd path/to/Front-End
+cd Front-End
 ```
 
 2.3 Run the Angular Application
