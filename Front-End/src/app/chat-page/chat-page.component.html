@@ -1,0 +1,25 @@
+<div class="chat-page">
+  <!-- Messages Container -->
+  <div class="messages" #messagesContainer>
+    <div *ngFor="let msg of messages" class="message" [ngClass]="{'user-message': msg.user, 'bot-reply': msg.bot}">
+      <div class="message-content">
+        <!-- Display user message -->
+        <div *ngIf="msg.user" class="user-text">{{ msg.user }}</div>
+        <!-- Display bot reply -->
+        <div *ngIf="msg.bot" class="bot-text">{{ msg.bot }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input Container -->
+  <div class="input">
+    <input
+      [(ngModel)]="userMessage"
+      placeholder="Type a message..."
+      class="input-field"
+    />
+    <button mat-raised-button color="primary" (click)="sendMessage()" class="send-button">
+      Send
+    </button>
+  </div>
+</div>

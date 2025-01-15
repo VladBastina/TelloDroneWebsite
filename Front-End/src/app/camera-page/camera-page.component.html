@@ -1,0 +1,16 @@
+<div class="camera-container">
+  <div class="video-wrapper">
+    <video id="videoElement" autoplay muted></video>
+
+    <!-- Overlay -->
+    <div class="overlay" *ngIf="showOverlay">
+      <p>You cannot show signs to the camera at the moment.</p>
+    </div>
+  </div>
+  <div class="list-container">
+    <h2>Captured Items</h2>
+    <ul>
+      <li *ngFor="let item of items">{{ item }}</li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,204 @@
+Residual Network and Hand Landmark Classification Documentation
+
+This documentation provides an in-depth explanation of the provided code, which implements a Residual Network for classifying hand landmarks extracted from images using MediaPipe Hands.
+
+Overview
+
+The code is designed to classify hand gestures based on landmarks extracted from images. The pipeline includes:
+
+Hand Landmark Extraction: Using MediaPipe Hands to detect and normalize hand landmarks from an image.
+
+Residual Network: A neural network architecture for classification.
+
+Integration with Pillow and PyTorch: Processing Pillow images and classifying them with the trained PyTorch model.
+
+Components
+
+1. MediaPipe Hands
+
+MediaPipe Hands is used to detect hand landmarks in images. It extracts key points corresponding to hand joints and returns them as a set of coordinates.
+
+Initialization:
+
+mp_hands = mp.solutions.hands
+hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.5)
+
+static_image_mode: If False, the detector assumes a video stream and detects landmarks in real-time.
+
+max_num_hands: Limits the number of hands to detect.
+
+min_detection_confidence: The minimum confidence score for detecting hands.
+
+2. Residual Network Architecture
+
+A custom residual network is implemented for classification. This architecture uses residual blocks, which are designed to address the vanishing gradient problem in deep networks.
+
+Residual Block
+
+class ResidualBlock(nn.Module):
+    def __init__(self, in_features, out_features):
+        super(ResidualBlock, self).__init__()
+
+        self.fc1 = nn.Linear(in_features, out_features)
+        self.fc2 = nn.Linear(out_features, out_features)
+        self.skip_connection = nn.Linear(in_features, out_features) if in_features != out_features else None
+
+    def forward(self, x):
+        residual = x
+
+        out = F.relu(self.fc1(x))
+        out = self.fc2(out)
+
+        if self.skip_connection is not None:
+            residual = self.skip_connection(x)
+
+        out += residual
+        out = F.relu(out)
+        return out
+
+fc1 and fc2: Fully connected layers within the block.
+
+Skip Connection: Adds the input directly to the output of the block to improve gradient flow.
+
+Residual Network
+
+class ResidualNetwork(nn.Module):
+    def __init__(self, input_size, hidden_layer_sizes, output_size):
+        super(ResidualNetwork, self).__init__()
+
+        self.fc_in = nn.Linear(input_size, hidden_layer_sizes[0])
+        self.residual_blocks = nn.ModuleList()
+        for i in range(len(hidden_layer_sizes) - 1):
+            self.residual_blocks.append(ResidualBlock(hidden_layer_sizes[i], hidden_layer_sizes[i + 1]))
+        self.fc_out = nn.Linear(hidden_layer_sizes[-1], output_size)
+
+    def forward(self, x):
+        x = F.relu(self.fc_in(x))
+
+        for block in self.residual_blocks:
+            x = block(x)
+
+        x = self.fc_out(x)
+        return x
+
+fc_in: Maps the input to the first hidden layer.
+
+residual_blocks: A sequence of residual blocks.
+
+fc_out: Produces the final output for classification.
+
+3. Hand Landmark Normalization
+
+The landmarks are normalized to make them relative to the smallest x and y coordinates.
+
+def normalize_landmarks(landmarks: List[List[int]]) -> List[Tuple[float, float]]:
+    x_coords = [lm[0] for lm in landmarks]
+    y_coords = [lm[1] for lm in landmarks]
+
+    min_x = np.min(x_coords)
+    min_y = np.min(y_coords)
+
+    normalized_landmarks = [(int(x - min_x), int(y - min_y)) for x, y in landmarks]
+    return normalized_landmarks
+
+Input: List of x, y coordinates.
+
+Output: Normalized coordinates relative to the minimum x and y values.
+
+4. Extracting Landmarks from an Image
+
+The following functions handle image processing and landmark extraction:
+
+Extract and Normalize Landmarks
+
+def extract_and_normalize_landmarks(image: np.ndarray) -> Optional[Tuple[List[Tuple[float, float]], np.ndarray]]:
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    result = hands.process(image_rgb)
+
+    if result.multi_hand_landmarks:
+        hand_landmarks = result.multi_hand_landmarks[0]
+        landmarks = []
+        for landmark in hand_landmarks.landmark:
+            landmarks.append([int(landmark.x * 360), int(landmark.y * 240)])
+        normalized_landmarks = normalize_landmarks(landmarks)
+        for hand_landmarks in result.multi_hand_landmarks:
+            mp.solutions.drawing_utils.draw_landmarks(image, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS)
+        return normalized_landmarks, image
+    return None, image
+
+Converts the image to RGB for MediaPipe.
+
+Processes the image to extract landmarks.
+
+Normalizes the landmarks.
+
+Process Image for Model
+
+def process_image_for_model(image: np.ndarray) -> Optional[Tuple[np.ndarray, np.ndarray]]:
+    image_resized = cv2.resize(image, (360, 240))
+    landmarks, image = extract_and_normalize_landmarks(image_resized)
+
+    if landmarks:
+        flattened_landmarks = np.array([coord for lm in landmarks for coord in lm])
+        return flattened_landmarks, image
+    return None, image
+
+Resizes the image to a fixed size.
+
+Extracts and flattens landmarks for model input.
+
+5. Classifying Images
+
+The following function integrates the Residual Network and MediaPipe to classify hand landmarks:
+
+def classify_pillow_image(pil_image: Image, model: ResidualNetwork, label_encoder: LabelEncoder) -> Optional[str]:
+    image_np = np.array(pil_image)
+    if len(image_np.shape) == 2:
+        image_np = cv2.cvtColor(image_np, cv2.COLOR_GRAY2BGR)
+    elif image_np.shape[2] == 4:
+        image_np = cv2.cvtColor(image_np, cv2.COLOR_RGBA2BGR)
+
+    processed_data = process_image_for_model(image_np)
+    if processed_data is None:
+        return None
+
+    flattened_landmarks, _ = processed_data
+    input_tensor = torch.tensor(flattened_landmarks, dtype=torch.float32).unsqueeze(0)
+
+    model.eval()
+    with torch.no_grad():
+        output = model(input_tensor)
+        predicted_label = torch.argmax(output, dim=1).item()
+        class_name = label_encoder.inverse_transform([predicted_label])[0]
+
+    return class_name
+
+Converts the Pillow image to OpenCV format.
+
+Extracts and normalizes landmarks.
+
+Passes the landmarks through the Residual Network for classification.
+
+Decodes the predicted label using the label encoder.
+
+Pipeline Flow
+
+An image is passed to classify_pillow_image.
+
+The image is converted and resized.
+
+MediaPipe extracts hand landmarks, which are normalized and flattened.
+
+The Residual Network predicts the class label.
+
+The predicted label is returned as a string.
+
+Key Features
+
+Residual Network: Robust and efficient architecture for classification.
+
+MediaPipe Integration: Accurate hand landmark detection and preprocessing.
+
+Flexibility: Supports various input formats (grayscale, RGBA, etc.).
+
+This documentation provides a comprehensive understanding of the code and its components, enabling effective usage and further development.

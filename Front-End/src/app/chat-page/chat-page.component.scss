@@ -1,0 +1,99 @@
+.chat-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #121212; /* Dark background for the chat container */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px; /* Ensure space for scroll */
+  margin-bottom: 20px; /* Space above the input area */
+}
+
+.message {
+  display: flex;
+  justify-content: flex-start;
+  margin: 10px 0;
+}
+
+.user-message {
+  justify-content: flex-end;
+}
+
+.bot-reply {
+  justify-content: flex-start;
+}
+
+.message-content {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word; /* Handle long text gracefully */
+}
+
+.user-message .message-content {
+  background-color: #d9534f; /* Red background for user messages */
+  color: white; /* White text for contrast */
+  border-radius: 20px 20px 0 20px; /* Rounded edges */
+  margin-left: auto;
+}
+
+.bot-reply .message-content {
+  background-color: #5c5c5c; /* Light red background for bot replies */
+  color: white; /* White text for contrast */
+  border-radius: 20px 20px 20px 0; /* Rounded edges */
+}
+
+.input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+input {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+  background-color: #333; /* Dark background for input */
+  color: white; /* White text */
+}
+
+button {
+  padding: 10px 15px;
+  margin-left: 10px;
+  background-color: #d9534f; /* Red background for the button */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #c9302c; /* Darker red on hover */
+}
+
+::-webkit-scrollbar {
+  width: 8px; /* Custom scrollbar width */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #555; /* Dark gray for the scrollbar thumb */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #121212; /* Match the chat background */
+}

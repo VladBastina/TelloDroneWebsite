@@ -1,0 +1,85 @@
+The dji tello drone can follow the following commands:
+1.takeoff 
+2.land 
+3.move up 
+4.move down 
+5.move left 
+6.move right
+7.flip front
+8.flip back
+9.flip left
+10.flip right
+11. rotate clockwise 
+11. rotate counterclockwise
+
+
+DJI Tello Drone Sign-Based Gesture Control Documentation
+This documentation provides a detailed explanation of how to control the DJI Tello drone using hand gestures. Each gesture corresponds to a specific command for the drone. Follow these guidelines to interact with the drone efficiently.
+
+1. Takeoff - Thumbs Up
+Gesture:
+Thumbs Up: Raise one hand with your thumb pointing upwards.
+Action:
+The drone will initiate the takeoff sequence and ascend into the air.
+2. Land - All Fingers Up
+Gesture:
+All Fingers Up: Extend all five fingers of one hand, keeping them straight and pointing upwards.
+Action:
+The drone will begin the landing process and gently descend to the ground.
+3. Move Up - Finger Up
+Gesture:
+Finger Up: Raise one hand with a single finger pointing upwards.
+Action:
+The drone will ascend vertically to a higher altitude.
+4. Move Down - Finger Down
+Gesture:
+Finger Down: Extend one hand with a single finger pointing downwards.
+Action:
+The drone will move downward, lowering its altitude.
+5. Move Left - Finger Left
+Gesture:
+Finger Left: Point your index finger of one hand to the left (sideways).
+Action:
+The drone will move to the left, shifting horizontally.
+6. Move Right - Finger Right
+Gesture:
+Finger Right: Point your index finger of one hand to the right (sideways).
+Action:
+The drone will move to the right, shifting horizontally.
+7. Flip Front - Two Fingers Up
+Gesture:
+Two Fingers Up: Extend two fingers of one hand, pointing straight up.
+Action:
+The drone will perform a flip forward.
+8. Flip Back - Two Fingers Down
+Gesture:
+Two Fingers Down: Extend two fingers of one hand, pointing straight down.
+Action:
+The drone will perform a flip backward.
+9. Flip Left - Two Fingers Left
+Gesture:
+Two Fingers Left: Extend two fingers of one hand, pointing to the left.
+Action:
+The drone will perform a flip to the left.
+10. Flip Right - Two Fingers Right
+Gesture:
+Two Fingers Right: Extend two fingers of one hand, pointing to the right.
+Action:
+The drone will perform a flip to the right.
+11. Rotate Clockwise - Three Fingers Right
+Gesture:
+Three Fingers Right: Extend three fingers of one hand and point them to the right.
+Action:
+The drone will rotate clockwise in place.
+12. Rotate Counterclockwise - Three Fingers Left
+Gesture:
+Three Fingers Left: Extend three fingers of one hand and point them to the left.
+Action:
+The drone will rotate counterclockwise in place.
+Tips for Gesture Recognition:
+Ensure that the drone has a clear view of your hands while performing gestures.
+Perform the gestures slowly and deliberately to help the drone accurately detect them.
+Be mindful of the drone’s camera angle to ensure proper visibility.
+The gestures should be held for a moment, allowing the drone to recognize the command.
+By mastering these hand gestures, you can control your DJI Tello drone without the need for a controller, offering a more intuitive and fun flying experience.
+

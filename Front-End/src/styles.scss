@@ -1,0 +1,29 @@
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+body {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+.menu button {
+  margin: 10px;
+}
+.camera-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chat-page {
+  display: flex;
+  flex-direction: column;
+}
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+.input {
+  display: flex;
+}
+input {
+  flex: 1;
+  margin-right: 10px;
+}
