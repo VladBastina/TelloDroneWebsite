@@ -1,0 +1,11 @@
+Flask==2.2.2
+Flask-SocketIO==5.3.2
+Pillow==9.0.0
+torch==1.13.0
+scikit-learn==1.0.2
+opencv-python==4.5.3.56
+mediapipe==0.8.10
+qdrant-client==1.7.0
+llama-index==0.5.6
+IPython==7.34.0
+pytest
