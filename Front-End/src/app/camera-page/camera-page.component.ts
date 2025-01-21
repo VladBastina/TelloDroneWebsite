@@ -14,6 +14,7 @@ export class CameraPageComponent implements OnInit ,OnDestroy{
   canvasElement!: HTMLCanvasElement;
   items: string[] = [];
   showOverlay = false; // Overlay control
+  private captureIntervalId: any;
 
   constructor(private connectionService: ConnectionService) {}
 
@@ -21,6 +22,7 @@ export class CameraPageComponent implements OnInit ,OnDestroy{
     this.videoElement = document.querySelector('video')!;
     this.canvasElement = document.createElement('canvas');
     this.connectionService.connect();
+    this.connectionService.cameraCon();
 
     navigator.mediaDevices
       .getUserMedia({ video: true })
@@ -75,7 +77,7 @@ export class CameraPageComponent implements OnInit ,OnDestroy{
       }
     };
   
-    setInterval(captureAndSendFrame, delay);
+    this.captureIntervalId = setInterval(captureAndSendFrame, delay);
   }
 
   @HostListener('window:beforeunload', ['$event'])
@@ -88,6 +90,13 @@ export class CameraPageComponent implements OnInit ,OnDestroy{
   }
 
   private cleanupResources(): void {
+
+    if (this.captureIntervalId) {
+      clearInterval(this.captureIntervalId);
+      this.captureIntervalId = null; // Reset interval ID
+    }
+
+    this.connectionService.cameraDisc();
     this.connectionService.disconnect();
 
     if (this.videoElement && this.videoElement.srcObject) {

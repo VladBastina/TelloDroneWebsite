@@ -125,11 +125,11 @@ def handle_message(data):
         response = receive_answear(message)
         
         print(response) 
-        socketio.emit('response' , {'message' : f"{response}"})
+        socketio.emit('chatResponse' , {'message' : f"{response}"})
     except Exception as e:
         print(f"Failed to proces message : {e}")
         
-        socketio.emit('response' , {'message' :f"Failed to receive a response: {e}" })
+        socketio.emit('chatResponse' , {'message' :f"Failed to receive a response: {e}" })
 
 if __name__ == "__main__":
     socketio.run(app, host="127.0.0.1", port=5000)

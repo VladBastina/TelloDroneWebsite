@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable, Subject } from 'rxjs';
+import { response } from 'express';
+import { Console } from 'console';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConnectionService {
 
-  private socket!: Socket;
+  private socket!: Socket | null;
   private readonly serverUrl = 'http://localhost:5000';
 
   constructor() {}
@@ -17,7 +19,6 @@ export class ConnectionService {
 
     this.socket.on('connect', () => {
       console.log('Connected to server.');
-      //this.socket.emit('cameracon');
     });
 
     this.socket.on('disconnect', () => {
@@ -27,8 +28,24 @@ export class ConnectionService {
 
   disconnect(): void {
     if (this.socket) {
-      this.socket.emit('cameradisc');
       this.socket.disconnect();
+      this.socket = null;
+    }
+  }
+
+  cameraCon():void {
+    if (this.socket != null){
+    this.socket.emit('cameracon');
+
+    this.socket.once('response',(response : any) => {console.log(response.message);})
+    }
+  }
+
+  cameraDisc():void {
+    if(this.socket != null){
+    this.socket.emit('cameradisc');
+
+    this.socket.once('response',(response : any) => {console.log(response.message);})
     }
   }
 
@@ -52,7 +69,7 @@ export class ConnectionService {
     if (this.socket) {
       this.socket.emit('message', { message: userText });
 
-      this.socket.once('response', (response: any) => {
+      this.socket.once('chatResponse', (response: any) => {
         responseSubject.next(response.message);
       });
     }
