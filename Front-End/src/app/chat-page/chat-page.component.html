@@ -15,6 +15,7 @@
   <div class="input">
     <input
       [(ngModel)]="userMessage"
+      (keyup.enter)="sendMessage()"
       placeholder="Type a message..."
       class="input-field"
     />

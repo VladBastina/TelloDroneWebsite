@@ -1,7 +1,7 @@
 import logging
 import sys
 import os
-
+import yaml
 import qdrant_client
 from IPython.display import Markdown, display
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader,GPTVectorStoreIndex
@@ -14,7 +14,22 @@ from qdrant_client.http.models import VectorParams , Distance
 
 Settings.embed_model = FastEmbedEmbedding(model_name="BAAI/bge-base-en-v1.5")
 
-llm = Ollama(model = "llama3.2")
+with open("config.yaml", "r") as file:
+    config = yaml.safe_load(file)
+
+model_name = config.get("model", "llama3.2")
+system_prompt = config.get("system_prompt", "")
+settings = config.get("settings", {})
+
+llm = Ollama(
+    model=model_name,
+    system_prompt=system_prompt,
+    max_tokens=settings.get("max_tokens", 500),
+    temperature=settings.get("temperature", 0.7),
+    top_p=settings.get("top_p", 0.9),
+    presence_penalty=settings.get("presence_penalty", 0),
+    frequency_penalty=settings.get("frequency_penalty", 0),
+)
 
 Settings.llm = llm
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)

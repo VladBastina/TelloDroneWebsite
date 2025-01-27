@@ -1,0 +1,131 @@
+This Angular application is designed with three main components and one service:
+
+MenuComponent: Provides a simple navigation menu.
+
+CameraComponent: Connects to the camera and manages gesture recognition.
+
+ChatComponent: Enables a basic chat interface for user interactions.
+
+The ServerConnectionService handles communication with the backend server.
+
+Application Structure
+
+The application is structured into components and services. Each component serves a specific role, and the service acts as the communication bridge with the server.
+
+Components
+
+1. MenuComponent
+
+Purpose: The MenuComponent provides a navigation menu allowing users to switch between the camera and chat interfaces.
+
+Functionality: Contains buttons for navigation.
+
+Explanation: It uses Angular's Router to navigate to different components when a button is clicked.
+
+Key Features:
+
+A button to navigate to the camera view.
+
+A button to navigate to the chat interface.
+
+2. CameraComponent
+
+Purpose: The CameraComponent interfaces with the device's camera to enable gesture recognition.
+
+Functionality:
+
+Initializes the camera on load.
+
+Displays the camera feed to the user.
+
+Explanation: This component uses the browser's getUserMedia API to access the camera and show the video feed in a <video> element.
+
+Key Features:
+
+Real-time video display.
+
+Displays on a list next to the camera the result of the hand sign shown to the camera.
+
+3. ChatComponent
+
+Purpose: The ChatComponent provides a simple chat interface for sending and receiving messages.
+
+Functionality:
+
+Allows the user to input messages.
+
+Displays sent and received messages.
+
+Explanation: The component uses two-way data binding for the input field and a method to send messages to the server via the service.
+
+Key Features:
+
+Dynamic list of messages.
+
+Integration with the backend for responses.
+
+Service
+
+ConnectionService
+
+Purpose: Manages all backend communication.
+
+Functionality:
+
+Sends chat messages to the server.
+
+Retrieves responses from the server.
+
+Sends the frame received from the camera to the server and receives the sign shown in it.
+
+Explanation: The service uses IOSockets to comunicate with the server.
+
+Key Features:
+
+Simplifies API calls for components.
+
+Provides a central place to manage backend interaction.
+
+AppModule Configuration
+
+Explanation:
+
+The AppModule is the root module of the application. It declares all the components, imports necessary Angular modules, and sets up routing between components.
+
+Key Elements:
+
+Components:
+
+MenuComponent
+
+CameraComponent
+
+ChatComponent
+
+Routing:
+
+Configures routes for the menu, camera, and chat views.
+
+Imports:
+
+BrowserModule for basic Angular functionality.
+
+FormsModule for form handling (e.g., chat input).
+
+HttpClientModule for backend communication.
+
+Tips for Usage
+
+Navigation:
+
+Use the MenuComponent to switch between Camera and Chat views.
+
+Camera Initialization:
+
+Ensure the browser has permissions to access the camera for the CameraComponent.
+
+Chat Functionality:
+
+Verify backend connectivity for sending and receiving messages.
+
+This setup keeps the application modular and easy to expand. Let me know if you want a deeper dive into any specific part!
